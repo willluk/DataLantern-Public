@@ -1,4 +1,4 @@
-# DataLantern-Public-API
+# DataLantern-Public
 ========================
 
-Public repository of API into the Data Lantern Open Data ecosystem
+Public repository of APIs, docs, and other public resources related the Data Lantern Open Data ecosystem
