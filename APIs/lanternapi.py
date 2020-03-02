@@ -458,6 +458,31 @@ class lanternapi(object):
 
         return [code, body.decode(encoding)]
 
+    def notify(self, deviceId, message):
+        """Send device notification request for a device alert and return http response code and body."""
+
+        self.curlReset()
+
+        url = "https://" + self.hostName + self.urlBase + '/notify'
+        self.c.setopt(pycurl.URL, url)
+
+        postData = {'device_id': deviceId,
+                    'message': message}
+        # Form data must be provided already urlencoded.
+        postFields = urlencode(postData)
+        # Sets request method to POST,
+        # Content-Type header to application/x-www-form-urlencoded
+        # and data to send in request body.
+        self.c.setopt(pycurl.POSTFIELDS, postFields)
+
+        self.c.perform()
+
+        code = self.c.getinfo(pycurl.RESPONSE_CODE)
+        encoding = self.responseEncoding()
+        body = self.buffer.getvalue()
+
+        return [code, body.decode(encoding)]
+
     def set_query_parameter(self, url, param_name, param_value):
         """Given a URL, set or replace a query parameter and return the
         modified URL.
