@@ -189,6 +189,22 @@ class lanternapi(object):
 
         return [code, body.decode(encoding)]
 
+    def getProfile(self):
+        """Send get token request and return http response code and body."""
+
+        self.curlReset()
+
+        url = "https://" + self.hostName + self.urlBase + '/profile'
+        self.c.setopt(pycurl.URL, url)
+
+        self.c.perform()
+
+        code = self.c.getinfo(pycurl.RESPONSE_CODE)
+        encoding = self.responseEncoding()
+        body = self.buffer.getvalue()
+
+        return [code, body.decode(encoding)]
+
     def getApiToken(self):
         """Send get token request and return http response code and body."""
 
@@ -230,6 +246,94 @@ class lanternapi(object):
 
         url = "https://" + self.hostName + self.urlBase + '/device/' + str(deviceId)
         self.c.setopt(pycurl.URL, url)
+
+        self.c.perform()
+
+        code = self.c.getinfo(pycurl.RESPONSE_CODE)
+        encoding = self.responseEncoding()
+        body = self.buffer.getvalue()
+
+        return [code, body.decode(encoding)]
+
+    def createDevice(self, name, type, description, manufacturer_name,
+                           model_number, serial_number, version_number,
+                           barcode, config, custom_fields):
+        """Send post device API request and return http response code and body."""
+
+        self.curlReset()
+
+        url = "https://" + self.hostName + self.urlBase + '/device'
+        self.c.setopt(pycurl.URL, url)
+
+        postData = {'name': name,
+                    'type': type,
+                    'description': description,
+                    'manufacturer_name': manufacturer_name,
+                    'model_number': model_number,
+                    'serial_number': serial_number,
+                    'version_number': version_number,
+                    'barcode': barcode,
+                    'config': config,
+                    'custom_fields': custom_fields}
+        # Form data must be provided already urlencoded.
+        postFields = urlencode(postData)
+        # Sets request method to POST,
+        # Content-Type header to application/x-www-form-urlencoded
+        # and data to send in request body.
+        self.c.setopt(pycurl.POSTFIELDS, postFields)
+
+        self.c.perform()
+
+        code = self.c.getinfo(pycurl.RESPONSE_CODE)
+        encoding = self.responseEncoding()
+        body = self.buffer.getvalue()
+
+        return [code, body.decode(encoding)]
+
+    def updateDevice(self, deviceId, name, type, description, manufacturer_name,
+                           model_number, serial_number, version_number,
+                           barcode, config, custom_fields):
+        """Send put device API request and return http response code and body."""
+
+        self.curlReset()
+
+        url = "https://" + self.hostName + self.urlBase + '/device/' + str(deviceId)
+        self.c.setopt(pycurl.URL, url)
+        self.c.setopt(pycurl.CUSTOMREQUEST, 'put')
+
+        postData = {'name': name,
+                    'type': type,
+                    'description': description,
+                    'manufacturer_name': manufacturer_name,
+                    'model_number': model_number,
+                    'serial_number': serial_number,
+                    'version_number': version_number,
+                    'barcode': barcode,
+                    'config': config,
+                    'custom_fields': custom_fields}
+        # Form data must be provided already urlencoded.
+        postFields = urlencode(postData)
+        # Sets request method to POST,
+        # Content-Type header to application/x-www-form-urlencoded
+        # and data to send in request body.
+        self.c.setopt(pycurl.POSTFIELDS, postFields)
+
+        self.c.perform()
+
+        code = self.c.getinfo(pycurl.RESPONSE_CODE)
+        encoding = self.responseEncoding()
+        body = self.buffer.getvalue()
+
+        return [code, body.decode(encoding)]
+
+    def deleteDevice(self, deviceId):
+        """Send delete device API request and return http response code and body."""
+
+        self.curlReset()
+
+        url = "https://" + self.hostName + self.urlBase + '/device/' + str(deviceId)
+        self.c.setopt(pycurl.URL, url)
+        self.c.setopt(pycurl.CUSTOMREQUEST, 'delete')
 
         self.c.perform()
 

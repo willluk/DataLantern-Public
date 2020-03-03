@@ -53,12 +53,27 @@ def main():
     la = lanternapi.lanternapi()
     la.setHostname(args.hostname)
 
-    # login to DL server
+    # send response to DL server
     code, body = la.registerUser(args.inviteCode, args.firstname, args.lastname,
                                 args.username, args.email, args.password)
-    print('register status: %d' % code)
+    print('\nregister status: %d' % code)
     print('register response body: %r' % body)
     print('\n')
 
+    code, body = la.login(args.email, args.password)
+    print('login status: %d' % code)
+    print('response body: %r' % body)
+    print('\n')
+
+    # get user's profile
+    code, body = la.getProfile()
+    print('getProfile status: %d' % code)
+    print('getProfile response body: %r' % body)
+    print('\n')
+
+    code, body = la.logout()
+    print('logout status: %d' % code)
+    print('response body: %r' % body)
+    print('\n')
 if __name__ == "__main__":
 	main()
